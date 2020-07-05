@@ -3,52 +3,45 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
+	"strings"
 )
 
-/*
 var (
-	eggplant    string = "🍆"
-	watermelon  string = "🍉"
 	subdURL     string = "http://www.subdivx.com/index.php?accion=5&masdesc=&subtitulos=1&realiza_b=1&q="
-	subdPayload string = "Mr.Robot"
-	subdHeader  string = "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0"
+	subdPayload string = "mr robot s03"
+	subdHeaders        = map[string]string{
+		"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0"}
 )
-*/
-func main() {
-	// url := "https://reqres.in/api/users"
-	var url string = "http://www.subdivx.com/index.php?q=mr%20robot%20s03&accion=5&masdesc=&subtitulos=1&realiza_b=1"
-	req, _ := http.NewRequest("GET", url, nil)
 
-	req.Header.Add("cache-control", "no-cache")
+func getPage(headers map[string]string, url string, payload string) []byte {
 
-	res, _ := http.DefaultClient.Do(req)
+	req, _ := http.NewRequest("GET", url+payload, nil)
+
+	req.Header.Add("User-Agent", headers["User-Agent"])
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	defer res.Body.Close()
 
 	body, _ := ioutil.ReadAll(res.Body)
 
-	fmt.Println(string(body))
+	return body
+}
 
-	/*	fmt.Println("Hello Go! 🇺🇾 " + eggplant + " " + watermelon)
-		// http.NewRequest("GET", subdURL, reader)
+func main() {
 
-		req, _ := http.NewRequest("GET", subdURL, nil)
-		// req.Header.Add("content-type", "application/x-www-form-urlencoded")
-		// req.Header.Add("cache-control", "no-cache")
-		req.Header.Add("User-Agent", subdHeader)
+	subdPayload := strings.ReplaceAll(subdPayload, " ", "%20")
 
-		res, err := http.DefaultClient.Do(req)
-		if err != nil {
-			// handle err
-			println(err)
-		}
+	page := getPage(subdHeaders, subdURL, subdPayload)
 
-		defer res.Body.Close()
-		body, _ := ioutil.ReadAll(res.Body)
-
-		fmt.Println(string(body))
-
-	*/
+	titleStartIndex := strings.Index(string(page), "<Title>")
+	titleEndIndex := strings.Index(string(page), "</title>")
+	pageTitle := []byte(string(page)[titleStartIndex:titleEndIndex])
+	fmt.Println(string(pageTitle))
 
 }
