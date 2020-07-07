@@ -17,17 +17,24 @@ func main() {
 
 	subdPayload := strings.ReplaceAll(subdPayload, " ", "%20")
 
+	fmt.Printf("%s%s", subdURL, subdPayload)
 	page := getPage(subdHeaders, subdURL, subdPayload)
 
-	re := regexp.MustCompile("<div id=\"menu_detalle_buscador\">(.|\n)*?<div id=\"menu_detalle_buscador\">")
+	re := regexp.MustCompile("<div id=\"menu_detalle_buscador\">(.|\n)*?</div></div>")
 	lines := re.FindAllString(string(page), -1)
 
-	titleStartIndex := strings.Index(string(page), "subidos")
-	titleEndIndex := strings.Index(string(page), "pabloaran")
-	pageTitle := []byte(string(page)[titleStartIndex:titleEndIndex])
+	// titleStartIndex := strings.Index(string(page), "<Titulo>")
+	// titleEndIndex := strings.Index(string(page), "</titulo>")
+	// pageTitle := []byte(string(page)[titleStartIndex:titleEndIndex])
 
-	fmt.Println(string(pageTitle))
+	// fmt.Println(string(pageTitle))
 
-	fmt.Printf("%+q", lines)
+	fmt.Println("%+i\n\n", len(lines))
+
+	for i := 0; i < len(lines); i++ {
+		fmt.Printf("%+q\n\n", lines[i])
+	}
+
+	// fmt.Printf("%+q", lines)
 
 }
