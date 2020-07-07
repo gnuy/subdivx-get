@@ -23,18 +23,10 @@ func main() {
 	re := regexp.MustCompile("<div id=\"menu_detalle_buscador\">(.|\n)*?</div></div>")
 	lines := re.FindAllString(string(page), -1)
 
-	// titleStartIndex := strings.Index(string(page), "<Titulo>")
-	// titleEndIndex := strings.Index(string(page), "</titulo>")
-	// pageTitle := []byte(string(page)[titleStartIndex:titleEndIndex])
-
-	// fmt.Println(string(pageTitle))
-
 	fmt.Println("%+i\n\n", len(lines))
 
 	for i := 0; i < len(lines); i++ {
 		fmt.Printf("%+q\n\n", lines[i])
 	}
-
-	// fmt.Printf("%+q", lines)
 
 }
