@@ -11,6 +11,7 @@ var (
 	subdPayload string = "mr robot s03e01"
 	subdHeaders        = map[string]string{
 		"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101 Firefox/68.0"}
+	star string = "⭐"
 )
 
 func main() {
@@ -26,7 +27,7 @@ func main() {
 	fmt.Println("%+i\n\n", len(lines))
 
 	for i := 0; i < len(lines); i++ {
-		fmt.Printf("%+q\n\n", lines[i])
+		fmt.Printf("%s%+q%s\n\n", star, lines[i], star)
 	}
 
 }
