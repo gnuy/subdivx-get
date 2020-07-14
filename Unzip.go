@@ -2,12 +2,26 @@ package main
 
 import (
 	"archive/zip"
+	"compress/flate"
 	"io"
 	"os"
 	"path/filepath"
+
+	"github.com/mholt/archiver/v3"
 )
 
-func Unzip(src, dest string) error {
+var (
+	z = archiver.Zip{
+		CompressionLevel:       flate.DefaultCompression,
+		MkdirAll:               true,
+		SelectiveCompression:   true,
+		ContinueOnError:        false,
+		OverwriteExisting:      false,
+		ImplicitTopLevelFolder: false,
+	}
+)
+
+func unzip(src, dest string) error {
 	r, err := zip.OpenReader(src)
 	if err != nil {
 		return err

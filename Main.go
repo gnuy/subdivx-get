@@ -28,9 +28,9 @@ type subElement struct {
 // 	fmt.Printf("%s", subEjemplo)
 // }
 
-func toUtf8(iso8859_1_buf []byte) string {
-	buf := make([]rune, len(iso8859_1_buf))
-	for i, b := range iso8859_1_buf {
+func toUtf8(iso8859_1buf []byte) string {
+	buf := make([]rune, len(iso8859_1buf))
+	for i, b := range iso8859_1buf {
 		buf[i] = rune(b)
 	}
 	return string(buf)
@@ -44,7 +44,6 @@ func main() {
 	page := getPage(listURL, listPayload)
 
 	re := regexp.MustCompile(regex["filterList"])
-	// lines := re.FindAllString(string(page), -1)
 	lines := re.FindAll(page, -1)
 
 	fmt.Println("\n\n", len(lines))
