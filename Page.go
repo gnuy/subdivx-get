@@ -12,9 +12,9 @@ var (
 		"Accept-Charset": "utf-8"}
 )
 
-func getPage(url string, payload string) []byte {
+func getPage(url string) []byte {
 
-	req, _ := http.NewRequest("GET", url+payload, nil)
+	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("User-Agent", subdHeaders["User-Agent"])
 	req.Header.Add("Accept-Charset", subdHeaders["Accept-Charset"])
@@ -27,6 +27,7 @@ func getPage(url string, payload string) []byte {
 	defer res.Body.Close()
 
 	body, _ := ioutil.ReadAll(res.Body)
+	println(url)
 
 	return body
 }
