@@ -21,6 +21,11 @@ var (
 	}
 )
 
+func archiverunzip(file string, dest string) {
+	// z.Extract(file, "*.srt", dest)
+	z.Unarchive(file, dest)
+}
+
 func unzip(src, dest string) error {
 	r, err := zip.OpenReader(src)
 	if err != nil {

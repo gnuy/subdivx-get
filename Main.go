@@ -1,7 +1,8 @@
 package main
 
 import (
-	"fmt"
+	"io/ioutil"
+	"log"
 	"regexp"
 	"strings"
 )
@@ -35,7 +36,15 @@ func extract(line string, field string) string {
 }
 
 func main() {
-	fmt.Println(extract(subEjemplo, "getLink"))
+	// page := getPage("http://www.subdivx.com/X6XNTIwNDUyX-mr-robot-s03e01.html")
+	// fmt.Printf("%s", page)
+	file := getPage("http://www.subdivx.com/bajar.php?id=520452&u=8")
+	err := ioutil.WriteFile("file", file, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	archiverunzip("file", "/tmp")
+	// fmt.Printf("%s", file)
 }
 
 func toUtf8(iso8859_1buf []byte) string {
@@ -51,7 +60,7 @@ func toUtf8(iso8859_1buf []byte) string {
 // 	listPayload := strings.ReplaceAll(listPayload, " ", "%20")
 
 // 	fmt.Println(listURL + listPayload + "\n" + subdHeaders["User-Agent"])
-// 	page := getPage(listURL, listPayload)
+// 	page := getPage(listURL + listPayload)
 
 // 	re := regexp.MustCompile(regex["filterList"])
 // 	lines := re.FindAll(page, -1)
@@ -59,7 +68,7 @@ func toUtf8(iso8859_1buf []byte) string {
 // 	fmt.Println("\n\n", len(lines))
 
 // 	for i := 0; i < len(lines); i++ {
-// 		fmt.Printf("%s%s%s\n\n", "⭐", toUtf8(lines[i]), "⭐")
+// 		fmt.Printf("%s%s%s\n\n", "⭐", extract(toUtf8(lines[i]), "getLink"), "⭐")
 // 	}
 
 // }
