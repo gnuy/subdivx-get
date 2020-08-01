@@ -42,9 +42,12 @@ func main() {
 
 	fmt.Println("\n\n", len(lines))
 
-	// popular un []subElement con todos los campos correspondientes
+	// popular un []subElement con todos los campos correspondientes`
 	for i := 0; i < len(lines); i++ {
-		fmt.Printf("%s%s%s\n\n", "⭐", extract(toUtf8(lines[i]), "getLink"), "⭐")
+		//		fmt.Printf("%s%s%s\n\n", "⭐", extract(toUtf8(lines[i]), "getLink"), "⭐")
+		fmt.Printf("%s%s%s\n\n", "⭐", extract(toUtf8(lines[i]), "getCountry"), "⭐")
+
+		// fmt.Printf("%s%s%s\n\n", "⭐", toUtf8(lines[i]), "⭐")
 	}
 
 }

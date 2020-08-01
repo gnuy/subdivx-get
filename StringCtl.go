@@ -8,7 +8,9 @@ import (
 var (
 	regex = map[string]string{
 		"filterList": "<div id=\"menu_detalle_buscador\">(.|\n)*?</div></div>",
-		"getLink":    "<a class=\"titulo_menu_izq\" href=\"(.)*?\">"}
+		"getLink":    "<a class=\"titulo_menu_izq\" href=\"(.)*?\">",
+		"getDesc":    "<div id=\"buscador_detalle_sub\">(.)*?</div>",
+		"getCountry": "src=\"/pais/(.)*?.gif"}
 )
 
 func extract(line string, field string) string {
