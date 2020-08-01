@@ -17,10 +17,37 @@ var (
 		"getFormat":        "<b>Formato:</b> (.)*? <b>",
 		"getDate":          "<b>el</b> (.)*? </div>",
 		"getDownloads":     "<b>Downloads:</b> (.)*? <b>",
-		"getUploader":      "<b>Subido por:</b> <a class=(.)*?\">(.)*?</a>",
 		"getUploaderStep1": "<b>Subido por:</b> <a class=(.)*?\">(.)*?</a>",
 		"getUploaderStep2": "\">(.)*?</"}
 )
+
+func getLink(line []byte) string {
+	return extract(toUtf8(line), "getLink")
+}
+
+func getDesc(line []byte) string {
+	return extract(toUtf8(line), "getDesc")
+}
+
+func getCountry(line []byte) string {
+	return extract(toUtf8(line), "getCountry")
+}
+
+func getScore(line []byte) string {
+	return extract(toUtf8(line), "getScore")
+}
+
+func getFormat(line []byte) string {
+	return extract(toUtf8(line), "getFormat")
+}
+
+func getDate(line []byte) string {
+	return extract(toUtf8(line), "getDate")
+}
+
+func getDownloads(line []byte) string {
+	return extract(toUtf8(line), "getDownloads")
+}
 
 func getUploader(line []byte) string {
 	return extract(extract(toUtf8(line), "getUploaderStep1"), "getUploaderStep2")

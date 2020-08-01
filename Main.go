@@ -13,14 +13,14 @@ var (
 )
 
 type subElement struct {
-	link      string //√
-	desc      string //√
-	country   string //√ falta mappear número con país
-	downloads string //√
-	format    string //√
+	link      string
+	desc      string
+	country   string // falta mappear número con país
+	downloads string
+	format    string
 	uploader  string
-	score     string //√
-	date      string //√
+	score     string
+	date      string
 }
 
 // func main() {
@@ -35,7 +35,20 @@ type subElement struct {
 // 	// fmt.Printf("%s", file)
 // }
 
+func populateElement(line []byte) subElement {
+	return subElement{
+		link:      getLink(line),
+		desc:      getDesc(line),
+		country:   getCountry(line),
+		downloads: getDownloads(line),
+		format:    getFormat(line),
+		uploader:  getUploader(line),
+		score:     getScore(line),
+		date:      getDate(line)}
+}
+
 func main() {
+	elements := []subElement{}
 
 	listPayload := strings.ReplaceAll(listPayload, " ", "%20")
 
@@ -49,8 +62,16 @@ func main() {
 		//		fmt.Printf("%s%s%s\n\n", "⭐", extract(toUtf8(lines[i]), "getLink"), "⭐")
 		// fmt.Printf("%s%s%s\n\n", "⭐", extract(toUtf8(lines[i]), "getUploader"), "⭐")
 		fmt.Printf("%s%s%s\n\n", "⭐", getUploader(lines[i]), "⭐")
+		elements = append(elements, populateElement(lines[i]))
 
 		// fmt.Printf("%s%s%s\n\n", "⭐", toUtf8(lines[i]), "⭐")
+	}
+
+	fmt.Printf("Length: %v\n", len(elements))
+	fmt.Printf("Capacity: %v\n", cap(elements))
+
+	for i := 0; i < len(elements); i++ {
+		fmt.Printf("%s\n", elements[i])
 	}
 
 }
