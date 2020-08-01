@@ -7,15 +7,24 @@ import (
 
 var (
 	regex = map[string]string{
-		"filterList":   "<div id=\"menu_detalle_buscador\">(.|\n)*?</div></div>",
-		"getLink":      "<a class=\"titulo_menu_izq\" href=\"(.)*?\">",
-		"getDesc":      "<div id=\"buscador_detalle_sub\">(.)*?</div>",
-		"getCountry":   "src=\"/pais/(.)*?.gif",
-		"getScore":     "src=\"img/calif(.)*?.gif",
-		"getFormat":    "<b>Formato:</b> (.)*? <b>",
-		"getDate":      "<b>el</b> (.)*? </div>",
-		"getDownloads": "<b>Downloads:</b> (.)*? <b>"}
+		//Extract list of subs from html
+		"filterList": "<div id=\"menu_detalle_buscador\">(.|\n)*?</div></div>",
+		//Extract each field
+		"getLink":          "<a class=\"titulo_menu_izq\" href=\"(.)*?\">",
+		"getDesc":          "<div id=\"buscador_detalle_sub\">(.)*?</div>",
+		"getCountry":       "src=\"/pais/(.)*?.gif",
+		"getScore":         "src=\"img/calif(.)*?.gif",
+		"getFormat":        "<b>Formato:</b> (.)*? <b>",
+		"getDate":          "<b>el</b> (.)*? </div>",
+		"getDownloads":     "<b>Downloads:</b> (.)*? <b>",
+		"getUploader":      "<b>Subido por:</b> <a class=(.)*?\">(.)*?</a>",
+		"getUploaderStep1": "<b>Subido por:</b> <a class=(.)*?\">(.)*?</a>",
+		"getUploaderStep2": "\">(.)*?</"}
 )
+
+func getUploader(line []byte) string {
+	return extract(extract(toUtf8(line), "getUploaderStep1"), "getUploaderStep2")
+}
 
 func extract(line string, field string) string {
 	re := regexp.MustCompile(regex[field])

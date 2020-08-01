@@ -47,7 +47,8 @@ func main() {
 	// popular un []subElement con todos los campos correspondientes`
 	for i := 0; i < len(lines); i++ {
 		//		fmt.Printf("%s%s%s\n\n", "⭐", extract(toUtf8(lines[i]), "getLink"), "⭐")
-		fmt.Printf("%s%s%s\n\n", "⭐", extract(toUtf8(lines[i]), "getDownloads"), "⭐")
+		// fmt.Printf("%s%s%s\n\n", "⭐", extract(toUtf8(lines[i]), "getUploader"), "⭐")
+		fmt.Printf("%s%s%s\n\n", "⭐", getUploader(lines[i]), "⭐")
 
 		// fmt.Printf("%s%s%s\n\n", "⭐", toUtf8(lines[i]), "⭐")
 	}
