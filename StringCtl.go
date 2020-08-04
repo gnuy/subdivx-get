@@ -7,9 +7,8 @@ import (
 
 var (
 	regex = map[string]string{
-		//Extract list of subs from html
 		"filterList": "<div id=\"menu_detalle_buscador\">(.|\n)*?</div></div>",
-		//Extract each field
+
 		"getLink":          "<a class=\"titulo_menu_izq\" href=\"(.)*?\">",
 		"getDesc":          "<div id=\"buscador_detalle_sub\">(.)*?</div>",
 		"getCountry":       "src=\"/pais/(.)*?.gif",
@@ -18,8 +17,16 @@ var (
 		"getDate":          "<b>el</b> (.)*? </div>",
 		"getDownloads":     "<b>Downloads:</b> (.)*? <b>",
 		"getUploaderStep1": "<b>Subido por:</b> <a class=(.)*?\">(.)*?</a>",
-		"getUploaderStep2": "\">(.)*?</"}
+		"getUploaderStep2": "\">(.)*?</",
+
+		"getDownloadLink":   "<a class=\"link1\" href=\"(.)*?\">Bajar",
+		"getDownloadLinkId": "?id=(.)*?&",
+	}
 )
+
+func getDownloadLink(line []byte) string {
+	return extract(toUtf8(line), "getDownloadLink")
+}
 
 func getLink(line []byte) string {
 	return extract(toUtf8(line), "getLink")
