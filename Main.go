@@ -68,7 +68,7 @@ func main() {
 		fmt.Printf("%s\n", elements[i])
 	}
 
-	subPage := getPage(elements[3].link)
+	subPage := getPage(elements[3].link)         // Hay que mostrar lista y dar a elegir el nro de elemento
 	subFile := getPage(getDownloadLink(subPage)) // Download sub
 
 	err := ioutil.WriteFile("file", subFile, 0644)
