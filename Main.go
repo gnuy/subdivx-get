@@ -75,6 +75,6 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	unzip("file", "/home/gabo/go/src/github.com/gnunezyuve/subdivx-get")
+	unzip("file", ".")
 
 }
