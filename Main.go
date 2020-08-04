@@ -5,6 +5,9 @@ import (
 	"io/ioutil"
 	"log"
 	"strings"
+
+	"github.com/fatih/color"
+	"github.com/rodaine/table"
 )
 
 var (
@@ -51,6 +54,10 @@ func populateElement(line []byte) subElement {
 
 func main() {
 	elements := []subElement{}
+	headerFmt := color.New(color.FgGreen, color.Underline).SprintfFunc()
+	columnFmt := color.New(color.FgYellow).SprintfFunc()
+	tbl := table.New("ID", "Description", "Country", "Downloads", "Format", "Uploader", "Score", "Date")
+	tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(columnFmt)
 
 	listPayload := strings.ReplaceAll(listPayload, " ", "%20")
 
@@ -59,7 +66,9 @@ func main() {
 
 	for i := 0; i < len(lines); i++ {
 		elements = append(elements, populateElement(lines[i]))
+		tbl.AddRow(i, getDesc(lines[i]), getCountry(lines[i]), getDownloads(lines[i]), getFormat(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐", getDate(lines[i]))
 	}
+	tbl.Print()
 
 	fmt.Printf("Length: %v\n", len(elements))
 	fmt.Printf("Capacity: %v\n", cap(elements))
