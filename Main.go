@@ -69,10 +69,9 @@ func main() {
 	}
 
 	subPage := getPage(elements[3].link)
-	downloadLink := getDownloadLink(subPage)
-	fmt.Printf("%s", downloadLink)
+	subFile := getPage(getDownloadLink(subPage)) // Download sub
 
-	err := ioutil.WriteFile("file", []byte(downloadLink), 0644)
+	err := ioutil.WriteFile("file", subFile, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
