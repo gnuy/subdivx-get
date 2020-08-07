@@ -53,6 +53,20 @@ func populateElement(line []byte) subElement {
 	}
 }
 
+func getUserInput() int {
+	fmt.Print("\nSeleccioná el ID del sub -> ")
+	value, _ := reader.ReadString('\n')
+	value = strings.TrimSuffix(value, "\n")
+	intvalue, err := strconv.Atoi(value)
+	if err != nil {
+		// handle error
+		fmt.Println(err)
+		os.Exit(2)
+	}
+	return intvalue
+
+}
+
 func main() {
 	elements := []subElement{}
 	tbl := createTable()
@@ -66,18 +80,8 @@ func main() {
 		tbl.AddRow(i, trimString(getDesc(lines[i]), maxLengthDesc), getDownloads(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐")
 	}
 	tbl.Print()
-	fmt.Print("\nSeleccioná el ID del sub -> ")
-	value, _ := reader.ReadString('\n')
-	intvalue, err := strconv.Atoi(value)
-	if err != nil {
-		// handle error
-		fmt.Println(err)
-		os.Exit(2)
-	}
 
-	subPage := getPage(elements[intvalue].link)
-
-	// subPage := getPage(elements[3].link)         // Hay que mostrar lista y dar a elegir el nro de elemento
+	subPage := getPage(elements[getUserInput()].link)
 	subFile := getPage(getDownloadLink(subPage)) // Download sub
 
 	writefile := ioutil.WriteFile("file", subFile, 0644)

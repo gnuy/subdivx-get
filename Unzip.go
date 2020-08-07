@@ -2,6 +2,7 @@ package main
 
 import (
 	"compress/flate"
+	"log"
 
 	"github.com/mholt/archiver/v3"
 )
@@ -25,5 +26,11 @@ var (
 
 func unzip(file string, dest string) {
 
-	zip.Unarchive(file, dest)
+	error := zip.Unarchive(file, dest)
+	if error != nil {
+		error := rar.Unarchive(file, dest)
+		if error != nil {
+			log.Fatal(error)
+		}
+	}
 }
