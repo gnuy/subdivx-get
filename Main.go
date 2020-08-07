@@ -11,8 +11,9 @@ import (
 )
 
 var (
-	listURL     string = "http://www.subdivx.com/index.php?accion=5&masdesc=&subtitulos=1&realiza_b=1&q="
-	listPayload string = "mr robot s03e01" //deshardcdear, pasar por parámetro
+	maxLengthDesc        = 100
+	listURL       string = "http://www.subdivx.com/index.php?accion=5&masdesc=&subtitulos=1&realiza_b=1&q="
+	listPayload   string = "mr robot s03e01" //deshardcdear, pasar por parámetro
 	//sacar, ésto es uno de los elementos de la lista en getList(getPage(listURL + listPayload))
 )
 
@@ -52,13 +53,25 @@ func populateElement(line []byte) subElement {
 	}
 }
 
-func main() {
-	elements := []subElement{}
+func createTable() table.Table {
 	headerFmt := color.New(color.FgGreen, color.Underline).SprintfFunc()
 	columnFmt := color.New(color.FgYellow).SprintfFunc()
-	tbl := table.New("ID", "Description", "Country", "Downloads", "Format", "Uploader", "Score", "Date")
+	// tbl := table.New("ID", "Description", "Country", "Downloads", "Format", "Uploader", "Score", "Date")
+	tbl := table.New("ID", "Description", "Country", "Downloads", "Uploader", "Score")
 	tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(columnFmt)
+	return tbl
+}
 
+func trimString(value string, length int) string {
+	if len(value) > length {
+		value = value[:length]
+	}
+	return value
+}
+
+func main() {
+	elements := []subElement{}
+	tbl := createTable()
 	listPayload := strings.ReplaceAll(listPayload, " ", "%20")
 
 	fmt.Println(listURL + listPayload + "\n" + subdHeaders["User-Agent"])
@@ -66,16 +79,10 @@ func main() {
 
 	for i := 0; i < len(lines); i++ {
 		elements = append(elements, populateElement(lines[i]))
-		tbl.AddRow(i, getDesc(lines[i]), getCountry(lines[i]), getDownloads(lines[i]), getFormat(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐", getDate(lines[i]))
+		// tbl.AddRow(i, getDesc(lines[i]), getCountry(lines[i]), getDownloads(lines[i]), getFormat(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐", getDate(lines[i]))
+		tbl.AddRow(i, trimString(getDesc(lines[i]), maxLengthDesc), getCountry(lines[i]), getDownloads(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐")
 	}
 	tbl.Print()
-
-	fmt.Printf("Length: %v\n", len(elements))
-	fmt.Printf("Capacity: %v\n", cap(elements))
-
-	for i := 0; i < len(elements); i++ {
-		fmt.Printf("%s\n", elements[i])
-	}
 
 	subPage := getPage(elements[3].link)         // Hay que mostrar lista y dar a elegir el nro de elemento
 	subFile := getPage(getDownloadLink(subPage)) // Download sub

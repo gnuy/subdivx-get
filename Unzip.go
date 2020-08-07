@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	z = archiver.Zip{
+	zip = archiver.Zip{
 		CompressionLevel:       flate.DefaultCompression,
 		MkdirAll:               true,
 		SelectiveCompression:   true,
@@ -19,5 +19,5 @@ var (
 
 func unzip(file string, dest string) {
 	// z.Extract(file, "*.srt", dest)
-	z.Unarchive(file, dest)
+	zip.Unarchive(file, dest)
 }
