@@ -3,6 +3,7 @@ package main
 import (
 	"compress/flate"
 	"log"
+	"strings"
 
 	"github.com/mholt/archiver/v3"
 )
@@ -28,8 +29,13 @@ func unzip(file string, dest string) {
 
 	error := zip.Unarchive(file, dest)
 	if error != nil {
-		error := rar.Unarchive(file, dest)
-		if error != nil {
+		if strings.Contains(error.Error(), "not a valid zip file") {
+			error := rar.Unarchive(file, dest)
+			if error != nil {
+				log.Fatal(error)
+			}
+
+		} else {
 			log.Fatal(error)
 		}
 	}
