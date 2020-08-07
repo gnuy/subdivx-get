@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	maxLengthDesc = 100
+	maxLengthDesc = 120
 	regex         = map[string]string{
 		"filterList": "<div id=\"menu_detalle_buscador\">(.|\n)*?</div></div>",
 
@@ -89,8 +89,7 @@ func toUtf8(iso8859_1buf []byte) string {
 func createTable() table.Table {
 	headerFmt := color.New(color.FgGreen, color.Underline).SprintfFunc()
 	columnFmt := color.New(color.FgYellow).SprintfFunc()
-	// tbl := table.New("ID", "Description", "Country", "Downloads", "Format", "Uploader", "Score", "Date")
-	tbl := table.New("ID", "Description", "Country", "Downloads", "Uploader", "Score")
+	tbl := table.New("ID", "Descripción", "Descargas", "Usuario", "Calif.")
 	tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(columnFmt)
 	return tbl
 }

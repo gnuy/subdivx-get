@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -62,22 +63,26 @@ func main() {
 
 	for i := 0; i < len(lines); i++ {
 		elements = append(elements, populateElement(lines[i]))
-		// tbl.AddRow(i, getDesc(lines[i]), getCountry(lines[i]), getDownloads(lines[i]), getFormat(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐", getDate(lines[i]))
-		tbl.AddRow(i, trimString(getDesc(lines[i]), maxLengthDesc), getCountry(lines[i]), getDownloads(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐")
+		tbl.AddRow(i, trimString(getDesc(lines[i]), maxLengthDesc), getDownloads(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐")
 	}
 	tbl.Print()
-	fmt.Print("-> ")
-	// value, _ := reader.ReadString('\n')
-	// intvalue, _ := strconv.Atoi(value)
+	fmt.Print("\nSeleccioná el ID del sub -> ")
+	value, _ := reader.ReadString('\n')
+	intvalue, err := strconv.Atoi(value)
+	if err != nil {
+		// handle error
+		fmt.Println(err)
+		os.Exit(2)
+	}
 
-	subPage := getPage(elements[6].link)
+	subPage := getPage(elements[intvalue].link)
 
 	// subPage := getPage(elements[3].link)         // Hay que mostrar lista y dar a elegir el nro de elemento
 	subFile := getPage(getDownloadLink(subPage)) // Download sub
 
-	err := ioutil.WriteFile("file", subFile, 0644)
-	if err != nil {
-		log.Fatal(err)
+	writefile := ioutil.WriteFile("file", subFile, 0644)
+	if writefile != nil {
+		log.Fatal(writefile)
 	}
 	unzip("file", ".")
 
