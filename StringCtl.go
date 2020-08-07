@@ -3,10 +3,14 @@ package main
 import (
 	"regexp"
 	"strings"
+
+	"github.com/fatih/color"
+	"github.com/rodaine/table"
 )
 
 var (
-	regex = map[string]string{
+	maxLengthDesc = 100
+	regex         = map[string]string{
 		"filterList": "<div id=\"menu_detalle_buscador\">(.|\n)*?</div></div>",
 
 		"getLink":          "<a class=\"titulo_menu_izq\" href=\"(.)*?\">",
@@ -80,4 +84,20 @@ func toUtf8(iso8859_1buf []byte) string {
 		buf[i] = rune(b)
 	}
 	return string(buf)
+}
+
+func createTable() table.Table {
+	headerFmt := color.New(color.FgGreen, color.Underline).SprintfFunc()
+	columnFmt := color.New(color.FgYellow).SprintfFunc()
+	// tbl := table.New("ID", "Description", "Country", "Downloads", "Format", "Uploader", "Score", "Date")
+	tbl := table.New("ID", "Description", "Country", "Downloads", "Uploader", "Score")
+	tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(columnFmt)
+	return tbl
+}
+
+func trimString(value string, length int) string {
+	if len(value) > length {
+		value = value[:length]
+	}
+	return value
 }

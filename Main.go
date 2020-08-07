@@ -1,19 +1,18 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"strings"
-
-	"github.com/fatih/color"
-	"github.com/rodaine/table"
 )
 
 var (
-	maxLengthDesc        = 100
-	listURL       string = "http://www.subdivx.com/index.php?accion=5&masdesc=&subtitulos=1&realiza_b=1&q="
-	listPayload   string = "mr robot s03e01" //deshardcdear, pasar por parámetro
+	listURL     string = "http://www.subdivx.com/index.php?accion=5&masdesc=&subtitulos=1&realiza_b=1&q="
+	listPayload string = "mr robot s03e01" //deshardcdear, pasar por parámetro
+	reader             = bufio.NewReader(os.Stdin)
 	//sacar, ésto es uno de los elementos de la lista en getList(getPage(listURL + listPayload))
 )
 
@@ -53,22 +52,6 @@ func populateElement(line []byte) subElement {
 	}
 }
 
-func createTable() table.Table {
-	headerFmt := color.New(color.FgGreen, color.Underline).SprintfFunc()
-	columnFmt := color.New(color.FgYellow).SprintfFunc()
-	// tbl := table.New("ID", "Description", "Country", "Downloads", "Format", "Uploader", "Score", "Date")
-	tbl := table.New("ID", "Description", "Country", "Downloads", "Uploader", "Score")
-	tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(columnFmt)
-	return tbl
-}
-
-func trimString(value string, length int) string {
-	if len(value) > length {
-		value = value[:length]
-	}
-	return value
-}
-
 func main() {
 	elements := []subElement{}
 	tbl := createTable()
@@ -83,8 +66,13 @@ func main() {
 		tbl.AddRow(i, trimString(getDesc(lines[i]), maxLengthDesc), getCountry(lines[i]), getDownloads(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐")
 	}
 	tbl.Print()
+	fmt.Print("-> ")
+	// value, _ := reader.ReadString('\n')
+	// intvalue, _ := strconv.Atoi(value)
 
-	subPage := getPage(elements[3].link)         // Hay que mostrar lista y dar a elegir el nro de elemento
+	subPage := getPage(elements[6].link)
+
+	// subPage := getPage(elements[3].link)         // Hay que mostrar lista y dar a elegir el nro de elemento
 	subFile := getPage(getDownloadLink(subPage)) // Download sub
 
 	err := ioutil.WriteFile("file", subFile, 0644)

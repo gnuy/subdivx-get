@@ -15,9 +15,15 @@ var (
 		OverwriteExisting:      false,
 		ImplicitTopLevelFolder: false,
 	}
+	rar = archiver.Rar{
+		MkdirAll:               true,
+		ContinueOnError:        false,
+		OverwriteExisting:      false,
+		ImplicitTopLevelFolder: false,
+	}
 )
 
 func unzip(file string, dest string) {
-	// z.Extract(file, "*.srt", dest)
+
 	zip.Unarchive(file, dest)
 }
