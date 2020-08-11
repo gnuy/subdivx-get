@@ -13,18 +13,18 @@ var (
 	regex         = map[string]string{
 		"filterList": "<div id=\"menu_detalle_buscador\">(.|\n)*?</div></div>",
 
-		"getLink":          "<a class=\"titulo_menu_izq\" href=\"(.|\n)+\">",
-		"getDesc":          "<div id=\"buscador_detalle_sub\">(.|\n)+</div>",
-		"getCountry":       "src=\"/pais/(.|\n)+.gif",
-		"getScore":         "src=\"img/calif(.|\n)+.gif",
-		"getFormat":        "<b>Formato:</b> (.|\n)+ <b>",
-		"getDate":          "<b>el</b> (.|\n)+ </div>",
-		"getDownloads":     "<b>Downloads:</b> (.|\n)+ <b>",
-		"getUploaderStep1": "<b>Subido por:</b> <a class=(.|\n)+\">(.|\n)+</a>",
-		"getUploaderStep2": "\">(.|\n)+</",
+		"getLink":          "<a class=\"titulo_menu_izq\" href=\"(.)*?\">",
+		"getDesc":          "<div id=\"buscador_detalle_sub\">(.)*?</div>",
+		"getCountry":       "src=\"/pais/(.)*?.gif",
+		"getScore":         "src=\"img/calif(.)*?.gif",
+		"getFormat":        "<b>Formato:</b> (.)*? <b>",
+		"getDate":          "<b>el</b> (.)*? </div>",
+		"getDownloads":     "<b>Downloads:</b> (.)*? <b>",
+		"getUploaderStep1": "<b>Subido por:</b> <a class=(.)*?\">(.)*?</a>",
+		"getUploaderStep2": "\">(.)*?</",
 
-		"getDownloadLink":   "<a class=\"link1\" href=\"(.|\n)+\">Bajar",
-		"getDownloadLinkId": "?id=(.|\n)+&",
+		"getDownloadLink":   "<a class=\"link1\" href=\"(.)*?\">Bajar",
+		"getDownloadLinkId": "?id=(.)*?&",
 	}
 )
 
@@ -66,7 +66,7 @@ func getUploader(line []byte) string {
 
 func extract(line string, field string) string {
 	re := regexp.MustCompile(regex[field])
-	strParts := strings.Split(regex[field], "(.|\n)+")
+	strParts := strings.Split(regex[field], "(.)*?")
 	raw := re.FindString(line)
 	parsedValue := raw[len(strParts[0]) : len(raw)-len(strParts[1])]
 	return parsedValue

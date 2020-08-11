@@ -14,9 +14,9 @@ var (
 	// listURL     string = "http://www.subdivx.com/index.php?accion=5&masdesc=&subtitulos=1&realiza_b=1&q="
 	listURL string = "http://www.subdivx.com/index.php?accion=5&q="
 	// listPayload string = "mr robot s03e01" //deshardcdear, pasar por parámetro
-	// listPayload string = "batman begins"
-	listPayload string = "the office s05e08"
-	reader             = bufio.NewReader(os.Stdin)
+	listPayload string = "batman begins"
+	// listPayload string = "the office s05e08"
+	reader = bufio.NewReader(os.Stdin)
 	//sacar, ésto es uno de los elementos de la lista en getList(getPage(listURL + listPayload))
 )
 
@@ -67,9 +67,8 @@ func main() {
 	lines := getList(getPage(listURL + listPayload))
 
 	for i := 0; i < len(lines); i++ {
-		fmt.Printf("%s%+q%s\n\n", "⭐", lines[i], "⭐")
 		elements = append(elements, populateElement(lines[i]))
-		// tbl.AddRow(i, trimString(getDesc(lines[i]), maxLengthDesc), getDownloads(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐")
+		tbl.AddRow(i, trimString(getDesc(lines[i]), maxLengthDesc), getDownloads(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐")
 	}
 	tbl.Print()
 
