@@ -11,8 +11,10 @@ import (
 )
 
 var (
-	listURL     string = "http://www.subdivx.com/index.php?accion=5&masdesc=&subtitulos=1&realiza_b=1&q="
-	listPayload string = "mr robot s03e01" //deshardcdear, pasar por parámetro
+	// listURL     string = "http://www.subdivx.com/index.php?accion=5&masdesc=&subtitulos=1&realiza_b=1&q="
+	listURL string = "http://www.subdivx.com/index.php?accion=5&q="
+	// listPayload string = "mr robot s03e01" //deshardcdear, pasar por parámetro
+	listPayload string = "batman begins" //deshardcdear, pasar por parámetro
 	reader             = bufio.NewReader(os.Stdin)
 	//sacar, ésto es uno de los elementos de la lista en getList(getPage(listURL + listPayload))
 )
@@ -27,18 +29,6 @@ type subElement struct {
 	score     string
 	date      string
 }
-
-// func main() {
-// 	// page := getPage("http://www.subdivx.com/X6XNTIwNDUyX-mr-robot-s03e01.html")
-// 	// fmt.Printf("%s", page)
-// 	file := getPage("http://www.subdivx.com/bajar.php?id=520452&u=8")
-// 	err := ioutil.WriteFile("file", file, 0644)
-// 	if err != nil {
-// 		log.Fatal(err)
-// 	}
-// 	unzip("file", "/tmp")
-// 	// fmt.Printf("%s", file)
-// }
 
 func populateElement(line []byte) subElement {
 	return subElement{
@@ -76,8 +66,9 @@ func main() {
 	lines := getList(getPage(listURL + listPayload))
 
 	for i := 0; i < len(lines); i++ {
+		fmt.Printf("%s%+q%s\n\n", "⭐", lines[i], "⭐")
 		elements = append(elements, populateElement(lines[i]))
-		tbl.AddRow(i, trimString(getDesc(lines[i]), maxLengthDesc), getDownloads(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐")
+		// tbl.AddRow(i, trimString(getDesc(lines[i]), maxLengthDesc), getDownloads(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐")
 	}
 	tbl.Print()
 

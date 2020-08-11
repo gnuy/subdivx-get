@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	maxLengthDesc = 120
+	maxLengthDesc = 100
 	regex         = map[string]string{
 		"filterList": "<div id=\"menu_detalle_buscador\">(.|\n)*?</div></div>",
 

@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	zip = archiver.Zip{
+	z = archiver.Zip{
 		CompressionLevel:       flate.DefaultCompression,
 		MkdirAll:               true,
 		SelectiveCompression:   true,
@@ -17,7 +17,7 @@ var (
 		OverwriteExisting:      false,
 		ImplicitTopLevelFolder: false,
 	}
-	rar = archiver.Rar{
+	r = archiver.Rar{
 		MkdirAll:               true,
 		ContinueOnError:        false,
 		OverwriteExisting:      false,
@@ -26,11 +26,38 @@ var (
 )
 
 func unzip(file string, dest string) {
+	// err := z.Walk(file, func(f archiver.File) error {
+	// 	zfh, ok := f.Header.(zip.FileHeader)
+	// 	if ok {
+	// 		fmt.Println("Filename:", zfh.Name)
+	// 	}
+	// 	return nil
+	// })
+	// if err != nil {
+	// 	if strings.Contains(err.Error(), "not a valid zip file") {
+	// 		err := r.Walk(file, func(f archiver.File) error {
+	// 			zfh, ok := f.Name()
+	// 			if ok {
+	// 				fmt.Println("Filename:", zfh.Name)
+	// 			}
+	// 			return nil
+	// 		})
+	// 		if err != nil {
+	// 			log.Fatal(err)
+	// 		}
 
-	error := zip.Unarchive(file, dest)
+	// 		log.Fatal(err)
+	// 	} else {
+	// 		log.Fatal(err)
+	// 	}
+
+	// 	log.Fatal(err)
+	// }
+
+	error := z.Unarchive(file, dest)
 	if error != nil {
 		if strings.Contains(error.Error(), "not a valid zip file") {
-			error := rar.Unarchive(file, dest)
+			error := r.Unarchive(file, dest)
 			if error != nil {
 				log.Fatal(error)
 			}
