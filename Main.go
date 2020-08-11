@@ -11,13 +11,9 @@ import (
 )
 
 var (
-	// listURL     string = "http://www.subdivx.com/index.php?accion=5&masdesc=&subtitulos=1&realiza_b=1&q="
-	listURL string = "http://www.subdivx.com/index.php?accion=5&q="
-	// listPayload string = "mr robot s03e01" //deshardcdear, pasar por parámetro
-	// listPayload string = "batman begins"
-	listPayload string = "the office s05e08"
+	listURL     string = "http://www.subdivx.com/index.php?accion=5&q="
+	listPayload        = os.Args[1]
 	reader             = bufio.NewReader(os.Stdin)
-	//sacar, ésto es uno de los elementos de la lista en getList(getPage(listURL + listPayload))
 )
 
 type subElement struct {
@@ -63,22 +59,24 @@ func main() {
 	tbl := createTable()
 	listPayload := strings.ReplaceAll(listPayload, " ", "%20")
 
-	fmt.Println(listURL + listPayload + "\n" + subdHeaders["User-Agent"])
 	lines := getList(getPage(listURL + listPayload))
 
 	for i := 0; i < len(lines); i++ {
 		elements = append(elements, populateElement(lines[i]))
 		tbl.AddRow(i, trimString(getDesc(lines[i]), maxLengthDesc), getDownloads(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐")
 	}
-	tbl.Print()
 
-	subPage := getPage(elements[getUserInput()].link)
-	subFile := getPage(getDownloadLink(subPage)) // Download sub
+	if len(elements) > 0 {
+		tbl.Print()
+		subPage := getPage(elements[getUserInput()].link)
+		subFile := getPage(getDownloadLink(subPage)) // Download sub
 
-	writefile := ioutil.WriteFile("file", subFile, 0644)
-	if writefile != nil {
-		log.Fatal(writefile)
+		writefile := ioutil.WriteFile("file", subFile, 0644)
+		if writefile != nil {
+			log.Fatal(writefile)
+		}
+		unzip("file", ".")
+	} else {
+		fmt.Println("No se encontraron subs.")
 	}
-	unzip("file", ".")
-
 }

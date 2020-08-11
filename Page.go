@@ -27,7 +27,6 @@ func getPage(url string) []byte {
 	defer res.Body.Close()
 
 	body, _ := ioutil.ReadAll(res.Body)
-	println(url)
 
 	return body
 }
