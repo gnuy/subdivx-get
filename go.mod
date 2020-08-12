@@ -1,4 +1,4 @@
-module github.com/gnunezyuve/subdivx-get
+module github.com/gnuy/subdivx-get
 
 go 1.14
 
