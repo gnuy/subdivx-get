@@ -26,34 +26,6 @@ var (
 )
 
 func unzip(file string, dest string) {
-	// err := z.Walk(file, func(f archiver.File) error {
-	// 	zfh, ok := f.Header.(zip.FileHeader)
-	// 	if ok {
-	// 		fmt.Println("Filename:", zfh.Name)
-	// 	}
-	// 	return nil
-	// })
-	// if err != nil {
-	// 	if strings.Contains(err.Error(), "not a valid zip file") {
-	// 		err := r.Walk(file, func(f archiver.File) error {
-	// 			zfh, ok := f.Name()
-	// 			if ok {
-	// 				fmt.Println("Filename:", zfh.Name)
-	// 			}
-	// 			return nil
-	// 		})
-	// 		if err != nil {
-	// 			log.Fatal(err)
-	// 		}
-
-	// 		log.Fatal(err)
-	// 	} else {
-	// 		log.Fatal(err)
-	// 	}
-
-	// 	log.Fatal(err)
-	// }
-
 	error := z.Unarchive(file, dest)
 	if error != nil {
 		if strings.Contains(error.Error(), "not a valid zip file") {
