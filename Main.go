@@ -12,10 +12,11 @@ import (
 )
 
 var (
-	listURL     string = "http://www.subdivx.com/index.php?accion=5&q="
-	listPayload []string
-	subPosition = flag.Int("n", -1, "help message for flag n")
-	reader      = bufio.NewReader(os.Stdin)
+	listURL      string = "http://www.subdivx.com/index.php?accion=5&q="
+	listPayload  []string
+	subPosition  = flag.Int("n", -1, "help message for flag n")
+	fileLocation = flag.String("l", ".", "ubicación de los subs en el filesystem")
+	reader       = bufio.NewReader(os.Stdin)
 )
 
 type subElement struct {
@@ -78,11 +79,13 @@ func main() {
 		subPage := getPage(elements[*subPosition].link)
 		subFile := getPage(getDownloadLink(subPage)) // Download sub
 
-		writefile := ioutil.WriteFile("file", subFile, 0644)
+		tempFile := *fileLocation + "/subdivx-get.temp"
+		writefile := ioutil.WriteFile(tempFile, subFile, 0644)
 		if writefile != nil {
 			log.Fatal(writefile)
 		}
-		unzip("file", ".")
+		unzip(tempFile, *fileLocation)
+		os.RemoveAll(tempFile)
 	} else {
 		fmt.Println("No se encontraron subs.")
 	}
