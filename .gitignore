@@ -16,6 +16,7 @@ subdivx-get
 # Garbage
 subdivx-get.tmp
 *.srt
+*.txt
 
 # Test binary, built with `go test -c`
 *.test

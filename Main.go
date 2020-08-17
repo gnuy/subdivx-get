@@ -14,7 +14,7 @@ import (
 var (
 	listURL      string = "http://www.subdivx.com/index.php?accion=5&q="
 	listPayload  []string
-	subPosition  = flag.Int("n", -1, "help message for flag n")
+	subPosition  = flag.Int("n", -1, "número de sub en la lista")
 	fileLocation = flag.String("l", ".", "ubicación de los subs en el filesystem")
 	reader       = bufio.NewReader(os.Stdin)
 )
@@ -79,7 +79,7 @@ func main() {
 		subPage := getPage(elements[*subPosition].link)
 		subFile := getPage(getDownloadLink(subPage)) // Download sub
 
-		tempFile := *fileLocation + "/subdivx-get.temp"
+		tempFile := *fileLocation + "/subdivx-get.tmp"
 		writefile := ioutil.WriteFile(tempFile, subFile, 0644)
 		if writefile != nil {
 			log.Fatal(writefile)
