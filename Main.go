@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -12,8 +13,9 @@ import (
 
 var (
 	listURL     string = "http://www.subdivx.com/index.php?accion=5&q="
-	listPayload        = os.Args[1]
-	reader             = bufio.NewReader(os.Stdin)
+	listPayload []string
+	subPosition = flag.Int("n", -1, "help message for flag n")
+	reader      = bufio.NewReader(os.Stdin)
 )
 
 type subElement struct {
@@ -55,9 +57,11 @@ func getUserInput() int {
 }
 
 func main() {
+	flag.Parse()
+	listPayload = flag.Args()
 	elements := []subElement{}
 	tbl := createTable()
-	listPayload := strings.ReplaceAll(listPayload, " ", "%20")
+	listPayload := strings.ReplaceAll(fmt.Sprint(listPayload), " ", "%20")
 
 	lines := getList(getPage(listURL + listPayload))
 
@@ -67,8 +71,11 @@ func main() {
 	}
 
 	if len(elements) > 0 {
-		tbl.Print()
-		subPage := getPage(elements[getUserInput()].link)
+		if *subPosition == -1 {
+			tbl.Print()
+			*subPosition = getUserInput()
+		}
+		subPage := getPage(elements[*subPosition].link)
 		subFile := getPage(getDownloadLink(subPage)) // Download sub
 
 		writefile := ioutil.WriteFile("file", subFile, 0644)
