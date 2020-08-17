@@ -13,6 +13,10 @@
 # Executable
 subdivx-get
 
+# Garbage
+subdivx-get.tmp
+*.srt
+
 # Test binary, built with `go test -c`
 *.test
 
