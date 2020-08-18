@@ -13,6 +13,7 @@ require (
 	github.com/mholt/archiver/v3 v3.3.0
 	github.com/nwaples/rardecode v1.1.0 // indirect
 	github.com/pierrec/lz4 v2.5.2+incompatible // indirect
+	github.com/pierrec/lz4/v3 v3.3.2
 	github.com/rodaine/table v1.0.1
 	github.com/ulikunitz/xz v0.5.7 // indirect
 	golang.org/x/sys v0.0.0-20200817155316-9781c653f443 // indirect
