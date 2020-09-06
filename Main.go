@@ -68,7 +68,8 @@ func main() {
 
 	for i := 0; i < len(lines); i++ {
 		elements = append(elements, populateElement(lines[i]))
-		tbl.AddRow(i, trimString(getDesc(lines[i]), maxLengthDesc), getDownloads(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐")
+		tbl.AddRow(i, trimString(getDesc(lines[i]), maxLengthDesc), getDownloads(lines[i]),
+			getUploader(lines[i]), getScore(lines[i])+"⭐")
 	}
 
 	if len(elements) > 0 {

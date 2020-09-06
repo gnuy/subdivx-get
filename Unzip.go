@@ -2,6 +2,7 @@ package main
 
 import (
 	"compress/flate"
+	"errors"
 	"fmt"
 	"log"
 	"strings"
@@ -28,33 +29,37 @@ var (
 	w archiver.Walker
 )
 
+func tryscan(file string) {
+	w.Walk(file, func(f archiver.File) error {
+		fmt.Println(f.Name(), f.Size())
+		return nil
+	})
+}
+
 func scan(file string) {
 
 	err := z.Walk(file, func(f archiver.File) error {
-		fmt.Println(f.Name(), f.Size())
-
-		return nil
+		ret := errors.New(f.Name())
+		return ret
 	})
 
 	if err != nil {
 		if strings.Contains(err.Error(), "not a valid zip file") {
 			err := r.Walk(file, func(f archiver.File) error {
-				fmt.Println(f.Name(), f.Size())
-
-				return nil
+				ret := errors.New(f.Name())
+				return ret
 			})
 			if err != nil {
 				log.Fatal(err)
 			}
-
 		} else {
 			log.Fatal(err)
 		}
 	}
-
 }
 
 func unzip(file string, dest string) {
+
 	// scan(file)
 	error := z.Unarchive(file, dest)
 	if error != nil {
@@ -63,7 +68,6 @@ func unzip(file string, dest string) {
 			if error != nil {
 				log.Fatal(error)
 			}
-
 		} else {
 			log.Fatal(error)
 		}
