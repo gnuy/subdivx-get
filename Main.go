@@ -13,9 +13,12 @@ import (
 
 var (
 	listURL      string = "http://www.subdivx.com/index.php?accion=5&q="
+	subdivxURL   string = "https://www.subdivx.com/"
 	listPayload  []string
 	subPosition  = flag.Int("n", -1, "número de sub en la lista")
 	fileLocation = flag.String("l", ".", "ubicación de los subs en el filesystem")
+	verbose      = flag.Bool("v", false, "modo verboso")
+	debug        = flag.Bool("d", false, "modo debug")
 	reader       = bufio.NewReader(os.Stdin)
 )
 
@@ -68,16 +71,24 @@ func main() {
 
 	for i := 0; i < len(lines); i++ {
 		elements = append(elements, populateElement(lines[i]))
-		tbl.AddRow(i, trimString(getDesc(lines[i]), maxLengthDesc), getDownloads(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐")
+		tbl.AddRow(i, trimString(getDesc(lines[i]), maxLengthDesc), getDownloads(lines[i]),
+			getUploader(lines[i]), getScore(lines[i])+"⭐")
 	}
 
 	if len(elements) > 0 {
-		if *subPosition == -1 {
-			tbl.Print()
-			*subPosition = getUserInput()
+		if *subPosition == -1 { // Workaround de que el debugger se tranca en el getUserInput()
+			if *debug {
+				*subPosition = 0
+			} else {
+				tbl.Print()
+				*subPosition = getUserInput()
+			}
 		}
 		subPage := getPage(elements[*subPosition].link)
-		subFile := getPage(getDownloadLink(subPage)) // Download sub
+		if *verbose {
+			fmt.Println("subPage: " + getDownloadLink(subPage))
+		}
+		subFile := getPage(subdivxURL + getDownloadLink(subPage)) // Download sub
 
 		tempFile := *fileLocation + "/subdivx-get.tmp"
 		writefile := ioutil.WriteFile(tempFile, subFile, 0644)

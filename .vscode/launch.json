@@ -14,7 +14,8 @@
             "program": "${fileDirname}",
             "env": { },
             "args": [
-                "Batman Begins"
+                "-d",
+                "batman begins"
             ]
         }
     ]
