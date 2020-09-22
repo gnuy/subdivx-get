@@ -16,6 +16,7 @@ var (
 	subdivxURL   string = "https://www.subdivx.com/"
 	inputArgs    []string
 	listPayload  []string
+	subDir       []os.FileInfo
 	subPosition  = flag.Int("n", -1, "número de sub en la lista")
 	fileLocation = flag.String("l", ".", "ubicación de los subs en el filesystem")
 	verbose      = flag.Bool("v", false, "modo verboso")
@@ -61,6 +62,14 @@ func getUserInput() int {
 
 }
 
+func ls(dir string) []os.FileInfo {
+	files, err := ioutil.ReadDir(dir)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return files
+}
+
 func main() {
 	flag.Parse()
 	inputArgs = flag.Args()
@@ -91,10 +100,6 @@ func main() {
 		downloadLink := getDownloadLink(subPage)
 		downloadLinkID := getDownloadLinkID(downloadLink)
 		targetDir := *fileLocation + "/" + downloadLinkID
-		if *verbose {
-			fmt.Println("downloadLink: " + getDownloadLink(subPage))
-			fmt.Println("downloadLinkID: " + downloadLinkID)
-		}
 		subFile := getPage(subdivxURL + downloadLink) // Download sub
 		os.Mkdir(downloadLinkID, 0700)
 		tempFile := targetDir + "/subdivx-get.tmp"
@@ -104,6 +109,14 @@ func main() {
 		}
 		unzip(tempFile, targetDir)
 		os.RemoveAll(tempFile)
+		subDir = ls(targetDir)
+		if *verbose {
+			fmt.Println("downloadLink: " + getDownloadLink(subPage))
+			fmt.Println("downloadLinkID: " + downloadLinkID)
+			for _, f := range subDir {
+				fmt.Println("'" + targetDir + "/" + f.Name() + "'")
+			}
+		}
 	} else {
 		fmt.Println("No se encontraron subs.")
 	}
