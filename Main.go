@@ -14,6 +14,7 @@ import (
 var (
 	listURL      string = "http://www.subdivx.com/index.php?accion=5&q="
 	subdivxURL   string = "https://www.subdivx.com/"
+	inputArgs    []string
 	listPayload  []string
 	subPosition  = flag.Int("n", -1, "número de sub en la lista")
 	fileLocation = flag.String("l", ".", "ubicación de los subs en el filesystem")
@@ -62,17 +63,19 @@ func getUserInput() int {
 
 func main() {
 	flag.Parse()
-	listPayload = flag.Args()
+	inputArgs = flag.Args()
 	elements := []subElement{}
 	tbl := createTable()
-	listPayload := strings.ReplaceAll(fmt.Sprint(listPayload), " ", "%20")
-
+	listPayload := strings.ReplaceAll(fmt.Sprint(inputArgs), " ", "%20")
 	lines := getList(getPage(listURL + listPayload))
 
 	for i := 0; i < len(lines); i++ {
 		elements = append(elements, populateElement(lines[i]))
 		tbl.AddRow(i, trimString(getDesc(lines[i]), maxLengthDesc), getDownloads(lines[i]),
 			getUploader(lines[i]), getScore(lines[i])+"⭐")
+		if *verbose {
+			fmt.Printf("\n%s\n", elements)
+		}
 	}
 
 	if len(elements) > 0 {
@@ -85,17 +88,21 @@ func main() {
 			}
 		}
 		subPage := getPage(elements[*subPosition].link)
+		downloadLink := getDownloadLink(subPage)
+		downloadLinkID := getDownloadLinkID(downloadLink)
+		targetDir := *fileLocation + "/" + downloadLinkID
 		if *verbose {
-			fmt.Println("subPage: " + getDownloadLink(subPage))
+			fmt.Println("downloadLink: " + getDownloadLink(subPage))
+			fmt.Println("downloadLinkID: " + downloadLinkID)
 		}
-		subFile := getPage(subdivxURL + getDownloadLink(subPage)) // Download sub
-
-		tempFile := *fileLocation + "/subdivx-get.tmp"
+		subFile := getPage(subdivxURL + downloadLink) // Download sub
+		os.Mkdir(downloadLinkID, 0700)
+		tempFile := targetDir + "/subdivx-get.tmp"
 		writefile := ioutil.WriteFile(tempFile, subFile, 0644)
 		if writefile != nil {
 			log.Fatal(writefile)
 		}
-		unzip(tempFile, *fileLocation)
+		unzip(tempFile, targetDir)
 		os.RemoveAll(tempFile)
 	} else {
 		fmt.Println("No se encontraron subs.")

@@ -24,9 +24,13 @@ var (
 		"getUploaderStep2": "\">(.|\n)*?</",
 
 		"getDownloadLink":   "<a class=\"link1\" href=\"(.|\n)*?\">Bajar",
-		"getDownloadLinkId": "?id=(.|\n)*?&",
+		"getDownloadLinkId": "id=(.|\n)*?&",
 	}
 )
+
+func getDownloadLinkID(line string) string {
+	return extract(line, "getDownloadLinkId")
+}
 
 func getDownloadLink(line []byte) string {
 	return extract(toUtf8(line), "getDownloadLink")
