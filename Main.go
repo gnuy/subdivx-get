@@ -20,7 +20,6 @@ var (
 	subPosition  = flag.Int("n", -1, "número de sub en la lista")
 	fileLocation = flag.String("l", ".", "ubicación de los subs en el filesystem")
 	verbose      = flag.Bool("v", false, "modo verboso")
-	debug        = flag.Bool("d", false, "modo debug")
 	reader       = bufio.NewReader(os.Stdin)
 )
 
@@ -89,12 +88,8 @@ func main() {
 
 	if len(elements) > 0 {
 		if *subPosition == -1 { // Workaround de que el debugger se tranca en el getUserInput()
-			if *debug {
-				*subPosition = 0
-			} else {
-				tbl.Print()
-				*subPosition = getUserInput()
-			}
+			tbl.Print()
+			*subPosition = getUserInput()
 		}
 		subPage := getPage(elements[*subPosition].link)
 		downloadLink := getDownloadLink(subPage)

@@ -14,8 +14,8 @@
             "program": "${fileDirname}",
             "env": { },
             "args": [
-                "-d",
-                "batman begins"
+                "-v", "-n", "0",
+                "mulan"
             ]
         }
     ]
