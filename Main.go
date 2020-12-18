@@ -77,10 +77,14 @@ func main() {
 	listPayload := strings.ReplaceAll(fmt.Sprint(inputArgs), " ", "%20")
 	lines := getList(getPage(listURL + listPayload))
 
+	if *verbose {
+		fmt.Printf("\n%s\n", lines)
+	}
+
 	for i := 0; i < len(lines); i++ {
 		elements = append(elements, populateElement(lines[i]))
-		tbl.AddRow(i, trimString(getDesc(lines[i]), maxLengthDesc), getDownloads(lines[i]),
-			getUploader(lines[i]), getScore(lines[i])+"⭐")
+		tbl.AddRow(i, getTitle(lines[i]), getDesc(lines[i]),
+			getDownloads(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐")
 		if *verbose {
 			fmt.Printf("\n%s\n", elements)
 		}

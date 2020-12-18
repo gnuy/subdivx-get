@@ -9,8 +9,9 @@ import (
 )
 
 var (
-	maxLengthDesc = 100
-	regex         = map[string]string{
+	maxLengthTitle = 30
+	maxLengthDesc  = 80
+	regex          = map[string]string{
 		"filterList": "<div id=\"menu_detalle_buscador\">(.|\n)*?</div></div>",
 
 		"getLink":          "<a class=\"titulo_menu_izq\" href=\"(.|\n)*?\">",
@@ -22,11 +23,16 @@ var (
 		"getDownloads":     "<b>Downloads:</b> (.|\n)*? <b>",
 		"getUploaderStep1": "<b>Subido por:</b> <a class=(.|\n)*?\">(.|\n)*?</a>",
 		"getUploaderStep2": "\">(.|\n)*?</",
+		"getTitle":         ">Subtitulos de (.|\n)*?</a>",
 
 		"getDownloadLink":   "<a class=\"link1\" href=\"(.|\n)*?\">Bajar",
 		"getDownloadLinkId": "id=(.|\n)*?&",
 	}
 )
+
+func getTitle(line []byte) string {
+	return trimString(extract(toUtf8(line), "getTitle"), maxLengthTitle)
+}
 
 func getDownloadLinkID(line string) string {
 	return extract(line, "getDownloadLinkId")
@@ -41,7 +47,7 @@ func getLink(line []byte) string {
 }
 
 func getDesc(line []byte) string {
-	return extract(toUtf8(line), "getDesc")
+	return trimString(extract(toUtf8(line), "getDesc"), maxLengthDesc)
 }
 
 func getCountry(line []byte) string {
@@ -101,7 +107,7 @@ func createFileTable() table.Table {
 func createTable() table.Table {
 	headerFmt := color.New(color.FgGreen, color.Underline).SprintfFunc()
 	columnFmt := color.New(color.FgYellow).SprintfFunc()
-	tbl := table.New("ID", "Descripción", "Descargas", "Usuario", "Calif.")
+	tbl := table.New("ID", "Título", "Descripción", "Usuario", "Calif.")
 	tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(columnFmt)
 	return tbl
 }
