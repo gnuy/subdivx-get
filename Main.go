@@ -31,7 +31,6 @@ type subElement struct {
 	format    string
 	uploader  string
 	score     string
-	date      string
 }
 
 func populateElement(line []byte) subElement {
@@ -43,7 +42,6 @@ func populateElement(line []byte) subElement {
 		format:    getFormat(line),
 		uploader:  getUploader(line),
 		score:     getScore(line),
-		date:      getDate(line),
 	}
 }
 
