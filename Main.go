@@ -117,6 +117,30 @@ func processLines(lines [][]byte) (table.Table, []subElement) {
 	return tbl, elements
 }
 
+func getFolderFromElement(element subElement) string {
+	subPage := getPage(element.link)
+	downloadLink := getDownloadLink(subPage)
+	downloadLinkID := getDownloadLinkID(downloadLink)
+	if *verbose {
+		fmt.Println("downloadLink: " + downloadLink)
+		fmt.Println("downloadLinkID: " + downloadLinkID)
+	}
+
+	targetDir := *fileLocation + "/" + downloadLinkID
+	subFile := getPage(subdivxURL + downloadLink) // Download sub
+	os.Mkdir(downloadLinkID, 0700)
+	tempFile := targetDir + "/subdivx-get.tmp"
+	writefile := ioutil.WriteFile(tempFile, subFile, 0644)
+	if writefile != nil {
+		log.Fatal(writefile)
+	}
+	unzip(tempFile, targetDir)
+	os.RemoveAll(tempFile)
+
+	return targetDir
+
+}
+
 func main() {
 	flag.Parse()
 	inputArgs = flag.Args()
@@ -130,25 +154,7 @@ func main() {
 			tbl.Print()
 			*subPosition = getUserInput()
 		}
-
-		subPage := getPage(elements[*subPosition].link)
-		downloadLink := getDownloadLink(subPage)
-		downloadLinkID := getDownloadLinkID(downloadLink)
-		if *verbose {
-			fmt.Println("downloadLink: " + downloadLink)
-			fmt.Println("downloadLinkID: " + downloadLinkID)
-		}
-		targetDir := *fileLocation + "/" + downloadLinkID
-		subFile := getPage(subdivxURL + downloadLink) // Download sub
-		os.Mkdir(downloadLinkID, 0700)
-		tempFile := targetDir + "/subdivx-get.tmp"
-		writefile := ioutil.WriteFile(tempFile, subFile, 0644)
-		if writefile != nil {
-			log.Fatal(writefile)
-		}
-		unzip(tempFile, targetDir)
-		os.RemoveAll(tempFile)
-
+		targetDir := getFolderFromElement(elements[*subPosition])
 		selectedFile := selectFile(targetDir)
 		fmt.Println(selectedFile)
 
