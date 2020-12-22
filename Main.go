@@ -9,6 +9,8 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"github.com/rodaine/table"
 )
 
 var (
@@ -95,17 +97,14 @@ func ls(dir string) []os.FileInfo {
 	return files
 }
 
-func main() {
-	flag.Parse()
-	inputArgs = flag.Args()
-	elements := []subElement{}
-	tbl := createTable()
-	listPayload := strings.ReplaceAll(fmt.Sprint(inputArgs), " ", "%20")
-	lines := getList(getPage(listURL + listPayload))
+func processLines(lines [][]byte) (table.Table, []subElement) {
 
 	if *verbose {
 		fmt.Printf("\n%s\n", lines)
 	}
+
+	elements := []subElement{}
+	tbl := createTable()
 
 	for i := 0; i < len(lines); i++ {
 		elements = append(elements, populateElement(lines[i]))
@@ -115,12 +114,23 @@ func main() {
 			fmt.Printf("\n%s\n", elements)
 		}
 	}
+	return tbl, elements
+}
+
+func main() {
+	flag.Parse()
+	inputArgs = flag.Args()
+	listPayload := strings.ReplaceAll(fmt.Sprint(inputArgs), " ", "%20")
+	lines := getList(getPage(listURL + listPayload))
+
+	tbl, elements := processLines(lines)
 
 	if len(elements) > 0 {
 		if *subPosition == -1 { // Workaround de que el debugger se tranca en el getUserInput()
 			tbl.Print()
 			*subPosition = getUserInput()
 		}
+
 		subPage := getPage(elements[*subPosition].link)
 		downloadLink := getDownloadLink(subPage)
 		downloadLinkID := getDownloadLinkID(downloadLink)

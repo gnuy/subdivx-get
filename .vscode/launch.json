@@ -15,7 +15,7 @@
             "env": { },
             "args": [
                 "-v", "-n", "0",
-                "mulan"
+                "batman begins"
             ]
         }
     ]
