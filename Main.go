@@ -22,6 +22,7 @@ var (
 	subPosition  = flag.Int("n", -1, "número de sub en la lista")
 	fileLocation = flag.String("l", ".", "ubicación de los subs en el filesystem")
 	verbose      = flag.Bool("v", false, "modo verboso")
+	lucky        = flag.Bool("7", false, "modo suerte 🍀")
 	reader       = bufio.NewReader(os.Stdin)
 )
 
@@ -71,6 +72,9 @@ func selectFile(targetDir string) string {
 		if *verbose {
 			fmt.Println("'" + targetDir + "/" + f.Name() + "'")
 		}
+		if *lucky {
+			return "'" + targetDir + "/" + f.Name() + "'"
+		}
 		if i > 0 {
 			filePosition = i
 		}
@@ -113,6 +117,9 @@ func processLines(lines [][]byte) (table.Table, []subElement) {
 		if *verbose {
 			fmt.Printf("\n%s\n", elements)
 		}
+		if *lucky {
+			return tbl, elements
+		}
 	}
 	return tbl, elements
 }
@@ -150,6 +157,9 @@ func main() {
 	tbl, elements := processLines(lines)
 
 	if len(elements) > 0 {
+		if *lucky {
+			*subPosition = 0
+		}
 		if *subPosition == -1 { // Workaround de que el debugger se tranca en el getUserInput()
 			tbl.Print()
 			*subPosition = getUserInput()

@@ -55,7 +55,6 @@ func scan(file string) {
 }
 
 func unzip(file string, dest string) {
-	// scan(file)
 	error := z.Unarchive(file, dest)
 	if error != nil {
 		if strings.Contains(error.Error(), "not a valid zip file") {
