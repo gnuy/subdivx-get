@@ -59,6 +59,34 @@ func getUserInput() int {
 
 }
 
+func selectFile(targetDir string) string {
+
+	filePosition := 0
+	subDir = ls(targetDir)
+	filetable := createFileTable()
+	for i, f := range subDir {
+		filetable.AddRow(i, f.Name())
+		if *verbose {
+			fmt.Println("'" + targetDir + "/" + f.Name() + "'")
+		}
+		if i > 0 {
+			filePosition = i
+		}
+	}
+
+	if filePosition > 0 {
+		filetable.Print()
+		filePosition = getUserInput()
+	}
+	for i, f := range subDir {
+		if i == filePosition {
+			return "'" + targetDir + "/" + f.Name() + "'"
+		}
+	}
+
+	return os.DevNull
+}
+
 func ls(dir string) []os.FileInfo {
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {
@@ -96,6 +124,10 @@ func main() {
 		subPage := getPage(elements[*subPosition].link)
 		downloadLink := getDownloadLink(subPage)
 		downloadLinkID := getDownloadLinkID(downloadLink)
+		if *verbose {
+			fmt.Println("downloadLink: " + downloadLink)
+			fmt.Println("downloadLinkID: " + downloadLinkID)
+		}
 		targetDir := *fileLocation + "/" + downloadLinkID
 		subFile := getPage(subdivxURL + downloadLink) // Download sub
 		os.Mkdir(downloadLinkID, 0700)
@@ -106,19 +138,10 @@ func main() {
 		}
 		unzip(tempFile, targetDir)
 		os.RemoveAll(tempFile)
-		subDir = ls(targetDir)
-		if *verbose {
-			fmt.Println("downloadLink: " + getDownloadLink(subPage))
-			fmt.Println("downloadLinkID: " + downloadLinkID)
-			filetable := createFileTable()
 
-			for i, f := range subDir {
-				filetable.AddRow(i, f.Name())
-				fmt.Println("'" + targetDir + "/" + f.Name() + "'")
-			}
+		selectedFile := selectFile(targetDir)
+		fmt.Println(selectedFile)
 
-			filetable.Print()
-		}
 	} else {
 		fmt.Println("No se encontraron subs.")
 	}
