@@ -48,7 +48,7 @@ func populateElement(line []byte) subElement {
 }
 
 func getUserInput() int {
-	fmt.Print("\nSeleccioná el ID del sub -> ")
+	fmt.Print("\nSeleccioná el ID -> ")
 	value, _ := reader.ReadString('\n')
 	value = strings.TrimSuffix(value, "\n")
 	intvalue, err := strconv.Atoi(value)
