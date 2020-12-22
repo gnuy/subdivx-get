@@ -3,19 +3,19 @@ module github.com/gnuy/subdivx-get
 go 1.14
 
 require (
-	github.com/fatih/color v1.9.0
-	github.com/go-delve/delve v1.5.0 // indirect
-	github.com/golang/gddo v0.0.0-20200831202555-721e228c7686 // indirect
-	github.com/google/go-dap v0.3.0 // indirect
-	github.com/mattn/go-colorable v0.1.8 // indirect
-	github.com/mholt/archiver/v3 v3.3.2
-	github.com/peterh/liner v1.2.0 // indirect
-	github.com/pierrec/lz4 v2.5.2+incompatible // indirect
+	github.com/andybalholm/brotli v1.0.1 // indirect
+	github.com/fatih/color v1.10.0
+	github.com/frankban/quicktest v1.11.3 // indirect
+	github.com/golang/snappy v0.0.2 // indirect
+	github.com/golangci/golangci-lint v1.31.0 // indirect
+	github.com/klauspost/compress v1.11.4 // indirect
+	github.com/klauspost/pgzip v1.2.5 // indirect
+	github.com/mholt/archiver/v3 v3.5.0
+	github.com/pierrec/lz4/v3 v3.3.2 // indirect
+	github.com/pierrec/lz4/v4 v4.1.2 // indirect
 	github.com/rodaine/table v1.0.1
-	github.com/sirupsen/logrus v1.7.0 // indirect
-	github.com/spf13/cobra v1.1.1 // indirect
-	go.starlark.net v0.0.0-20201014215153-dff0ae5b4820 // indirect
-	golang.org/x/arch v0.0.0-20201008161808-52c3e6f60cff // indirect
-	golang.org/x/sys v0.0.0-20201020230747-6e5568b54d1a // indirect
-	gopkg.in/yaml.v2 v2.3.0 // indirect
+	github.com/ulikunitz/xz v0.5.9 // indirect
+	golang.org/x/sys v0.0.0-20201221093633-bc327ba9c2f0 // indirect
+	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
+	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
 )
