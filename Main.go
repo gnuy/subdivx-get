@@ -110,9 +110,14 @@ func main() {
 		if *verbose {
 			fmt.Println("downloadLink: " + getDownloadLink(subPage))
 			fmt.Println("downloadLinkID: " + downloadLinkID)
-			for _, f := range subDir {
+			filetable := createFileTable()
+
+			for i, f := range subDir {
+				filetable.AddRow(i, f.Name())
 				fmt.Println("'" + targetDir + "/" + f.Name() + "'")
 			}
+
+			filetable.Print()
 		}
 	} else {
 		fmt.Println("No se encontraron subs.")
