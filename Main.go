@@ -68,7 +68,10 @@ func selectFile(targetDir string) string {
 	subDir = ls(targetDir)
 	filetable := createFileTable()
 	for i, f := range subDir {
-		filetable.AddRow(i, f.Name())
+
+		if strings.HasSuffix(f.Name(), ".srt") {
+			filetable.AddRow(i, f.Name())
+		}
 		if *verbose {
 			fmt.Println("'" + targetDir + "/" + f.Name() + "'")
 		}
