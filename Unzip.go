@@ -6,7 +6,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/mholt/archiver/v3"
+	"github.com/mholt/archiver"
 )
 
 var (
