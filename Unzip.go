@@ -14,14 +14,14 @@ var (
 		CompressionLevel:       flate.DefaultCompression,
 		MkdirAll:               true,
 		SelectiveCompression:   true,
-		ContinueOnError:        false,
-		OverwriteExisting:      false,
+		ContinueOnError:        true,
+		OverwriteExisting:      true,
 		ImplicitTopLevelFolder: false,
 	}
 	r = archiver.Rar{
 		MkdirAll:               true,
-		ContinueOnError:        false,
-		OverwriteExisting:      false,
+		ContinueOnError:        true,
+		OverwriteExisting:      true,
 		ImplicitTopLevelFolder: false,
 	}
 	u archiver.Unarchiver
