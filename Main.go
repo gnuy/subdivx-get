@@ -138,7 +138,6 @@ func getFolderFromElement(element subElement) string {
 
 	targetDir := *fileLocation + "/" + downloadLinkID
 	subFile := getPage(subdivxURL + downloadLink) // Download sub
-	os.Mkdir(*fileLocation, 0700)
 	os.Mkdir(targetDir, 0700)
 	tempFile := targetDir + "/subdivx-get.tmp"
 	writefile := ioutil.WriteFile(tempFile, subFile, 0644)
@@ -156,6 +155,10 @@ func main() {
 	flag.Parse()
 	inputArgs = flag.Args()
 	listPayload := strings.ReplaceAll(fmt.Sprint(inputArgs), " ", "%20")
+	dirErr := os.MkdirAll(*fileLocation, 0700)
+	if dirErr != nil {
+		log.Fatal(dirErr)
+	}
 	lines := getList(getPage(listURL + listPayload))
 
 	tbl, elements := processLines(lines)
