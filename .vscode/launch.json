@@ -14,7 +14,7 @@
             "program": "${fileDirname}",
             "env": { },
             "args": [
-                "-v", "-n", "0",
+                "-v", "-n", "0", "-l", "/tmp/subdivx-get",
                 "batman begins"
             ]
         }

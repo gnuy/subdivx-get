@@ -138,7 +138,8 @@ func getFolderFromElement(element subElement) string {
 
 	targetDir := *fileLocation + "/" + downloadLinkID
 	subFile := getPage(subdivxURL + downloadLink) // Download sub
-	os.Mkdir(downloadLinkID, 0700)
+	os.Mkdir(*fileLocation, 0700)
+	os.Mkdir(targetDir, 0700)
 	tempFile := targetDir + "/subdivx-get.tmp"
 	writefile := ioutil.WriteFile(tempFile, subFile, 0644)
 	if writefile != nil {
