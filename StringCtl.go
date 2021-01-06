@@ -107,7 +107,7 @@ func createFileTable() table.Table {
 func createTable() table.Table {
 	headerFmt := color.New(color.FgGreen, color.Underline).SprintfFunc()
 	columnFmt := color.New(color.FgYellow).SprintfFunc()
-	tbl := table.New("ID", "Título", "Descripción", "Usuario", "Calif.")
+	tbl := table.New("ID", "Título", "Descripción", "Descargas", "Usuario")
 	tbl.WithHeaderFormatter(headerFmt).WithFirstColumnFormatter(columnFmt)
 	return tbl
 }

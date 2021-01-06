@@ -116,7 +116,7 @@ func processLines(lines [][]byte) (table.Table, []subElement) {
 	for i := 0; i < len(lines); i++ {
 		elements = append(elements, populateElement(lines[i]))
 		tbl.AddRow(i, getTitle(lines[i]), getDesc(lines[i]),
-			getDownloads(lines[i]), getUploader(lines[i]), getScore(lines[i])+"⭐")
+			getDownloads(lines[i]), getUploader(lines[i]))
 		if *verbose {
 			fmt.Printf("\n%s\n", elements)
 		}
