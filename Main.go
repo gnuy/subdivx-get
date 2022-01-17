@@ -154,12 +154,12 @@ func getFolderFromElement(element subElement) string {
 func main() {
 	flag.Parse()
 	inputArgs = flag.Args()
-	listPayload := strings.ReplaceAll(fmt.Sprint(inputArgs), " ", "%20")
+	listPayload := strings.ReplaceAll(fmt.Sprint(inputArgs), " ", "+")
 	dirErr := os.MkdirAll(*fileLocation, 0700)
 	if dirErr != nil {
 		log.Fatal(dirErr)
 	}
-	lines := getList(getPage(listURL + listPayload))
+	lines := getList(postPage(subdivxURL, []byte(`buscar2=`+listPayload+`&accion=5&masdesc=&subtitulos=1&realiza_b=1`)))
 
 	tbl, elements := processLines(lines)
 

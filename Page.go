@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -19,9 +20,34 @@ func getPage(url string) []byte {
 
 	req, _ := http.NewRequest("GET", url, nil)
 
-	req.Header.Add("User-Agent", subdHeaders["User-Agent"])
-	req.Header.Add("Accept-Charset", subdHeaders["Accept-Charset"])
-	req.Header.Add("Cookie", subdHeaders["Cookie"])
+	for k, v := range subdHeaders {
+		req.Header.Add(k, subdHeaders[v])
+	}
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer res.Body.Close()
+
+	body, _ := ioutil.ReadAll(res.Body)
+	if *verbose {
+		fmt.Printf("%s\n%T\n", res.Header, res.Header)
+		fmt.Printf("%s\n%T\n", res.Header.Get("Set-Cookie"), res.Header.Get("Set-Cookie"))
+	}
+
+	return body
+}
+
+func postPage(url string, reqbody []byte) []byte {
+
+	req, _ := http.NewRequest("POST", url, bytes.NewBuffer(reqbody))
+
+	for k, v := range subdHeaders {
+		req.Header.Add(k, subdHeaders[v])
+	}
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
