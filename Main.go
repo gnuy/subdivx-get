@@ -73,10 +73,10 @@ func selectFile(targetDir string) string {
 			filetable.AddRow(i, f.Name())
 		}
 		if *verbose {
-			fmt.Println("'" + targetDir + "/" + f.Name() + "'")
+			fmt.Println("'" + targetDir + string(os.PathSeparator) + f.Name() + "'")
 		}
 		if *lucky {
-			return "'" + targetDir + "/" + f.Name() + "'"
+			return "'" + targetDir + string(os.PathSeparator) + f.Name() + "'"
 		}
 		if i > 0 {
 			filePosition = i
@@ -89,7 +89,7 @@ func selectFile(targetDir string) string {
 	}
 	for i, f := range subDir {
 		if i == filePosition {
-			return "'" + targetDir + "/" + f.Name() + "'"
+			return "'" + targetDir + string(os.PathSeparator) + f.Name() + "'"
 		}
 	}
 
@@ -136,7 +136,7 @@ func getFolderFromElement(element subElement) string {
 		fmt.Println("downloadLinkID: " + downloadLinkID)
 	}
 
-	targetDir := *fileLocation + "/" + downloadLinkID
+	targetDir := *fileLocation + string(os.PathSeparator) + downloadLinkID
 	subFile := getPage(subdivxURL + downloadLink) // Download sub
 	os.Mkdir(targetDir, 0700)
 	tempFile := targetDir + "/subdivx-get.tmp"
