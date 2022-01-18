@@ -128,16 +128,20 @@ func processLines(lines [][]byte) (table.Table, []subElement) {
 }
 
 func getFolderFromElement(element subElement) string {
-	subPage := getPage(element.link)
+	subPage, _ := getPage(element.link)
 	downloadLink := getDownloadLink(subPage)
 	downloadLinkID := getDownloadLinkID(downloadLink)
+	targetDir := *fileLocation + "/" + downloadLinkID
+	subRedirect, _ := getRedirectPage(subdivxURL + downloadLink) // Get headers from 301 redirection
+
 	if *verbose {
 		fmt.Println("downloadLink: " + downloadLink)
 		fmt.Println("downloadLinkID: " + downloadLinkID)
+		fmt.Println(subdivxURL + downloadLink)
+		fmt.Println(subRedirect)
 	}
 
-	targetDir := *fileLocation + "/" + downloadLinkID
-	subFile := getPage(subdivxURL + downloadLink) // Download sub
+	subFile, _ := getPage(subRedirect) // Download sub
 	os.Mkdir(targetDir, 0700)
 	tempFile := targetDir + "/subdivx-get.tmp"
 	writefile := ioutil.WriteFile(tempFile, subFile, 0644)
